@@ -37,6 +37,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -47,33 +48,35 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.preference)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
 
-    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    implementation (libs.glide)
 
-    implementation ("androidx.room:room-ktx:2.5.1")
-    kapt ("androidx.room:room-compiler:2.5.1")
+    implementation (libs.androidx.room.ktx)
+    kapt (libs.androidx.room.compiler)
 
-    implementation ("androidx.activity:activity-ktx:1.6.1")
-    implementation ("androidx.fragment:fragment-ktx:1.5.5")
+    implementation (libs.androidx.activity.ktx)
+    implementation (libs.androidx.fragment.ktx)
 
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    implementation (libs.androidx.datastore.preferences)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.livedata.ktx)
 
-//    val camerax_version = ("1.1.0-beta02")
-//    implementation ("androidx.camera:camera-camera2:${camerax_version}")
-//    implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
-//    implementation ("androidx.camera:camera-view:${camerax_version}")
+    implementation (libs.androidx.camera.camera2)
+    implementation (libs.androidx.camera.lifecycle)
+    implementation (libs.androidx.camera.view)
 
-    implementation ("androidx.paging:paging-runtime-ktx:3.1.1")
-    implementation ("androidx.room:room-paging:2.5.1")
+    implementation (libs.androidx.paging.runtime.ktx)
+    implementation (libs.androidx.room.paging)
 
 
 }

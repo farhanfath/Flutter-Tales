@@ -1,30 +1,49 @@
 package com.project.storyappproject.ui.auth
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.project.storyappproject.data.AppRepository
-import com.project.storyappproject.data.model.User
-import com.project.storyappproject.data.response.LoginResponse
-import kotlinx.coroutines.launch
+import com.project.storyappproject.data.api.ApiConfig
+import com.project.storyappproject.data.model.response.AuthResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class LoginViewModel(private val storyRepository: AppRepository) : ViewModel() {
+class LoginViewModel : ViewModel() {
 
-    val loginResponse: LiveData<LoginResponse?> = storyRepository.loginResponse
-    val isLoading: LiveData<Boolean> = storyRepository.isLoading
-    val message: LiveData<String> = storyRepository.message
+    private val _isSuccess = MutableLiveData<Boolean>()
+    val isSuccess : LiveData<Boolean> = _isSuccess
 
-    val getUser = storyRepository.getUserPref()
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _isError = MutableLiveData<Boolean>()
+    val isError: LiveData<Boolean> = _isError
+
+    private val _loginResult = MutableLiveData<AuthResponse>()
+    val loginResult : LiveData<AuthResponse> = _loginResult
 
     fun userLogin(email: String, password: String) {
-        viewModelScope.launch {
-            storyRepository.userLogin(email, password)
-        }
-    }
+        _isLoading.value = true
+        _isError.value = false
+        _isSuccess.value = false
 
-    fun saveUserPref(user: User) {
-        viewModelScope.launch {
-            storyRepository.saveUserPref(user)
-        }
+        val service = ApiConfig().getApiService().postLogin(email, password)
+        service.enqueue(object : Callback<AuthResponse> {
+            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+                if (response.body()?.error == false) {
+                    _loginResult.value = response.body()
+                    _isError.value = false
+                } else {
+                    _isError.value = true
+                    _isLoading.value = false
+                }
+            }
+
+            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+                _isLoading.value = false
+                _isError.value = true
+            }
+        })
     }
 }

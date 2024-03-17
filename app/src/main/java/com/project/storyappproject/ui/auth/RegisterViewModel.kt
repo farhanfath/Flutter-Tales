@@ -1,26 +1,53 @@
 package com.project.storyappproject.ui.auth
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.project.storyappproject.data.AppRepository
-import com.project.storyappproject.data.response.RegisterResponse
-import kotlinx.coroutines.launch
+import com.project.storyappproject.data.api.ApiConfig
+import com.project.storyappproject.data.model.response.PostResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class RegisterViewModel(private val appRepository: AppRepository) : ViewModel() {
+class RegisterViewModel : ViewModel(){
 
-    val registerResponse: LiveData<RegisterResponse> = appRepository.registerResponse
-    val isLoading: LiveData<Boolean> = appRepository.isLoading
-    val message: LiveData<String> = appRepository.message
+    private val _isSuccess = MutableLiveData<Boolean>()
+    val isSuccess : LiveData<Boolean> = _isSuccess
 
-    val getUser = appRepository.getUserPref()
+    private val _registerResult = MutableLiveData<PostResponse>()
+    val registerResult : LiveData<PostResponse> = _registerResult
 
-    fun userRegister(name: String, email: String, password: String) {
-        viewModelScope.launch {
-            appRepository.userRegister(name, email, password)
-        }
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _isError = MutableLiveData<Boolean>()
+    val isError: LiveData<Boolean> = _isError
+
+    fun userRegister(name: String, password: String, email: String) {
+        _isLoading.value = true
+        _isSuccess.value = false
+        _isError.value = false
+
+        val service = ApiConfig().getApiService().postRegister(name, password, email)
+        service.enqueue(object : Callback<PostResponse>{
+            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
+                _isLoading.value = false
+                if (response.body()?.error == false) {
+                    _registerResult.value = response.body()
+                    _isSuccess.value = true
+                    _isError.value = false
+                } else {
+                    _isError.value = true
+                    _isLoading.value = false
+                    _isSuccess.value = false
+                }
+            }
+
+            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                _isLoading.value = false
+                _isError.value = true
+            }
+
+        })
     }
 }
-
-
-

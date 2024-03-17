@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/storyPictPreview"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginHorizontal="32dp"
+        android:contentDescription="@string/postTitle"
+        android:src="@drawable/picadd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/cam_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/camera"
+        app:layout_constraintEnd_toEndOf="@+id/descEtLayout"
+        app:layout_constraintTop_toBottomOf="@+id/descEtLayout" />
+
+    <Button
+        android:id="@+id/camx_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/camerax"
+        app:layout_constraintStart_toStartOf="@+id/descEtLayout"
+        app:layout_constraintTop_toBottomOf="@+id/descEtLayout" />
+
+    <Button
+        android:id="@+id/gallery_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/gallery"
+        app:layout_constraintEnd_toStartOf="@+id/cam_btn"
+        app:layout_constraintStart_toEndOf="@+id/camx_btn"
+        app:layout_constraintTop_toBottomOf="@+id/descEtLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descEtLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/storyPictPreview">
+
+        <EditText
+            android:id="@+id/descEt"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/descText"
+            android:inputType="textMultiLine"
+            android:lines="12"
+            android:maxLines="16"
+            android:minLines="4"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/storyPictPreview" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/postBtn"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:text="@string/post"
+        app:layout_constraintBottom_toTopOf="@+id/backHome"
+        app:layout_constraintEnd_toEndOf="@+id/cam_btn"
+        app:layout_constraintStart_toStartOf="@+id/camx_btn"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_btn" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/back" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

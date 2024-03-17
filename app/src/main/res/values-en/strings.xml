@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Butterfly Story</string>
+
+    <string name="signin">Login</string>
+    <string name="signup">Register</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+
+    <string name="name_notif">Enter Your Name</string>
+    <string name="email_notif">Enter Your Email</string>
+    <string name="password_notif">Enter Your Password</string>
+
+    <string name="upload">Posting</string>
+
+    <string name="image_capture">Pick Image</string>
+    <string name="switch_camera">Switch Camera</string>
+    <string name="photo_detail">photo detail</string>
+    <string name="image_preview">image preview</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_story">StoryActivity</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_stories">Stories</string>
+    <string name="menu_setting">Settings</string>
+    <string name="dateFormat">dd-mm-yyyy</string>
+    <string name="detailStory">Stories Detail</string>
+    <string name="postStory">Post Stories</string>
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="camerax">Camera X</string>
+    <string name="descText">Description</string>
+    <string name="post">Post</string>
+
+    <string name="dateAfter">"dd-MMM-yyyy"</string>
+
+    <string name="no_access">You Need Camera Access To Access Camera</string>
+
+    <string name="logout">Log Out</string>
+    <string name="back">Back Home Page</string>
+    <string name="postTitle">Post Story</string>
+    <string name="toPostDesc">To Post Activity</string>
+    <string name="tosharedesc">Share</string>
+
+    <string name="daftarText">Have Not Registered Yet?</string>
+    <string name="masukText">Already Have Account?</string>
+    <string name="username">username</string>
+
+    <string name="logoutSetting">Logout Account</string>
+    <string name="languageSetting">Change Language</string>
+    <string name="themeSetting">Change Theme</string>
+
+    <string name="picAPhoto">Take A Picture</string>
+    <string name="rotateCam">Switch Camera</string>
+
+    <string name="errorLogin">There is a Problem when try to Login</string>
+    <string name="errorRegister">There is a Problem when try to Register</string>
+    <string name="okay">Okay</string>
+
+    <string name="errorEmail">Enter A Valid Email</string>
+    <string name="errorPass">Password Must Have a Minimum of 8 Characters</string>
+    <string name="errorPost">There is Trouble When Try to Upload</string>
+    <string name="successPost">Post Story Success</string>
+    <string name="processPost">On Uploading Process</string>
+    <string name="processLogin">Process Login</string>
+    <string name="processRegister">Process Register</string>
+
+    <string name="spaceDesc">Spacer</string>
+    <string name="CreatorTv">Creator</string>
+    <string name="DescTv">Description</string>
+    <string name="detailImgDesc">Posted Image</string>
+</resources>

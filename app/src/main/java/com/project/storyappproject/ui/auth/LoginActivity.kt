@@ -1,12 +1,11 @@
 package com.project.storyappproject.ui.auth
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -14,117 +13,152 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.storyappproject.R
-import com.project.storyappproject.data.model.User
+import com.project.storyappproject.data.datastore.UserPreference
+import com.project.storyappproject.data.model.response.AuthResponse
+import com.project.storyappproject.data.model.user.UserModel
 import com.project.storyappproject.databinding.ActivityLoginBinding
-import com.project.storyappproject.ui.main.MainActivity
-import com.project.storyappproject.utils.ViewModelFactory
+import com.project.storyappproject.ui.customview.CustomAlert
+import com.project.storyappproject.ui.home.StoryActivity
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLoginBinding
-
-    private lateinit var factory: ViewModelFactory
-    private val loginViewModel: LoginViewModel by viewModels { factory }
-
-    private lateinit var user: User
-    private var statusCount = 0
-
+    private val loginViewModel by viewModels<LoginViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        factory = ViewModelFactory.getInstance(this)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        saveUserData()
-        loginViewModel.getUser.observe(this) { user ->
-            this.user = user
-            if (user.isLogin && statusCount == 0) {
-                statusCount++
-                Log.d(TAG, user.name)
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-
-        loginViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
-        loginViewModel.message.observe(this) {
-            if (it.isNotEmpty() && !user.isLogin) {
-                showToast(it)
-            }
-        }
-
-        setupView()
-        loginButtonAction()
+        buttonActionSetup()
+        animationHandler()
     }
 
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
-
-    private fun saveUserData() {
-        loginViewModel.loginResponse.observe(this) {response ->
-            if (response != null) {
-                val result = response.loginResult
-                user = User(result.name, result.token, true)
-                loginViewModel.saveUserPref(user)
-            }
-        }
-    }
-
-    private fun loginButtonAction() {
+    private fun buttonActionSetup() {
         binding.apply {
-            loginButton.setOnClickListener {
-                val email = emailEt.text.toString()
-                val password = passEt.text.toString()
-
-                when {
-                    email.isEmpty() -> emailEtLayout.error = getString(R.string.email_notif)
-                    password.isEmpty() || password.length <= 8 -> passEtLayout.error = getString(R.string.password_notif)
-
-                    else -> {
-                        loginViewModel  .userLogin(email, password)
-                    }
-                }
+            loginLayout.loginButton.setOnClickListener {
+                login()
             }
-
-            buttonToRegister.setOnClickListener {
+            loginLayout.buttonToRegister.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
         }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun login() {
+        val email = binding.loginLayout.emailEt.text.toString()
+        val password = binding.loginLayout.passEt.text.toString()
+
+        when {
+            email.isEmpty() -> {
+                binding.loginLayout.emailEtLayout.error = getString(R.string.email_notif)
+            }
+            password.isEmpty() -> {
+                binding.loginLayout.passEtLayout.error = getString(R.string.password_notif)
+            }
+            else -> {
+                loginViewModel.userLogin(email, password)
+
+                loginViewModel.isError.observe(this) {
+                    errorAlert(it)
+                }
+
+                loginViewModel.isLoading.observe(this) {
+                    showLoading(it)
+                }
+
+                loginViewModel.loginResult.observe(this) {
+                    loginHandler(it)
+                    Toast.makeText(this, "Berhasil Login", Toast.LENGTH_SHORT).show()
+                }
+
+                loginViewModel.isSuccess.observe(this) {
+                    Log.d("login", "Berhasil Login")
+                }
+            }
+        }
+    }
+
+    private fun errorAlert(isError: Boolean) {
+        if (isError) {
+            CustomAlert(this, R.string.errorRegister, R.drawable.error_image).show()
+        }
+    }
+
+    private fun loginHandler(loginUserData: AuthResponse) {
+        if (!loginUserData.error) {
+            saveUserData(loginUserData)
+
+            val intent = Intent(this, StoryActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun saveUserData(loginUserData: AuthResponse) {
+        val loginPreference = UserPreference(this)
+        val loginResult = loginUserData.loginResult
+        val userModel = UserModel(
+            name = loginResult.name, userId = loginResult.userId, token = loginResult.token
+        )
+        loginPreference.setLogin(userModel)
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBarLogin.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.loadingLayout.loadingDescTv.setText(R.string.processRegister)
+        if (isLoading) {
+            binding.loadingLayout.root.visibility = View.VISIBLE
+            binding.loginLayout.root.visibility = View.GONE
+
+        } else {
+            binding.loadingLayout.root.visibility = View.GONE
+            binding.loginLayout.root.visibility = View.VISIBLE
+        }
     }
 
-    companion object {
-        private const val TAG = "Nahraf"
+    private fun animationHandler() {
+        binding.apply {
+
+            loginLayout.Titletv.alpha = 0f
+            loginLayout.emailEtLayout.alpha = 0f
+            loginLayout.passEtLayout.alpha = 0f
+            loginLayout.loginButton.alpha = 0f
+            loginLayout.regsiterTeksTv.alpha = 0f
+            loginLayout.buttonToRegister.alpha = 0f
+
+            val titleAnimator = ObjectAnimator.ofFloat(loginLayout.Titletv, View.ALPHA, 0f, 1f)
+            titleAnimator.duration = 1000
+
+            val emailLayoutAnimator = ObjectAnimator.ofFloat(loginLayout.emailEtLayout, View.ALPHA, 0f, 1f)
+            emailLayoutAnimator.duration = 1000
+
+            val passLayoutAnimator = ObjectAnimator.ofFloat(loginLayout.passEtLayout, View.ALPHA, 0f, 1f)
+            passLayoutAnimator.duration = 1000
+
+            val loginButtonAnimator = ObjectAnimator.ofFloat(loginLayout.loginButton, View.ALPHA, 0f, 1f)
+            loginButtonAnimator.duration = 1000
+
+            val registerTextAnimator = ObjectAnimator.ofFloat(loginLayout.regsiterTeksTv, View.ALPHA, 0f, 1f)
+            registerTextAnimator.duration = 1000
+
+            val registerButtonAnimator = ObjectAnimator.ofFloat(loginLayout.buttonToRegister, View.ALPHA, 0f, 1f)
+            registerButtonAnimator.duration = 1000
+
+            val animatorSet = AnimatorSet()
+            animatorSet.playSequentially(
+                titleAnimator,
+                emailLayoutAnimator,
+                passLayoutAnimator,
+                loginButtonAnimator,
+                registerTextAnimator,
+                registerButtonAnimator
+            )
+
+            animatorSet.start()
+        }
     }
 }
 

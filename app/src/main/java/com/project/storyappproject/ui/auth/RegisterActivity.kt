@@ -1,113 +1,149 @@
 package com.project.storyappproject.ui.auth
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.storyappproject.R
-import com.project.storyappproject.data.model.User
 import com.project.storyappproject.databinding.ActivityRegisterBinding
-import com.project.storyappproject.utils.ViewModelFactory
+import com.project.storyappproject.ui.customview.CustomAlert
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-
-    private lateinit var factory: ViewModelFactory
-    private val registerViewModel: RegisterViewModel by viewModels { factory }
-    private lateinit var user : User
-
+    private lateinit var registerViewModel: RegisterViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        factory = ViewModelFactory.getInstance(this)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        registerViewModel.registerResponse.observe(this) { response ->
-            response.message?.let { Log.d(TAG, it) }
-            if (response != null) {
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                finish()
-            }
+        registerViewModel = RegisterViewModel()
+        binding.registerLayout.registerButton.setOnClickListener {
+            register()
         }
-
-        registerViewModel.isLoading.observe(this) {
-            showLoading(it)
+        animationHandler()
+        binding.registerLayout.buttonToLogin.setOnClickListener {
+            finish()
         }
-
-        registerViewModel.getUser.observe(this) { user ->
-            this.user = user
-        }
-
-        registerViewModel.message.observe(this) {
-            if (it.isNotEmpty() && !user.isLogin) {
-                showToast(it)
-            }
-        }
-
-        setupView()
-        registerButtonAction()
     }
 
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
+    private fun register() {
+        val name = binding.registerLayout.nameEt.text.toString()
+        val email = binding.registerLayout.emailEt.text.toString()
+        val password = binding.registerLayout.passEt.text.toString()
 
-    private fun registerButtonAction() {
-        binding.apply {
-            registerButton.setOnClickListener {
-                val name = nameEt.text.toString()
-                val email = emailEt.text.toString()
-                val password = passEt.text.toString()
-                when {
-                    name.isEmpty() -> nameEtLayout.error = getString(R.string.name_notif)
-                    email.isEmpty() -> nameEtLayout.error = getString(R.string.email_notif)
-                    password.isEmpty() -> nameEtLayout.error = getString(R.string.password_notif)
-                    password.length >= 8 -> {
-                        registerViewModel.userRegister(name, email, password)
+        when {
+            name.isEmpty() -> {
+                binding.registerLayout.nameEtLayout.error = getString(R.string.name_notif)
+            }
+            email.isEmpty() -> {
+                binding.registerLayout.emailEtLayout.error = getString(R.string.email_notif)
+            }
+            password.isEmpty() -> {
+                binding.registerLayout.passEtLayout.error = getString(R.string.password_notif)
+            }
+            else -> {
+                registerViewModel.userRegister(name, password, email)
+
+                registerViewModel.isLoading.observe(this) { isLoading ->
+                    showLoading(isLoading)
+                }
+
+                registerViewModel.isError.observe(this) {
+                    errorAlert(it)
+                }
+
+                registerViewModel.isSuccess.observe(this) { isSuccess ->
+                    if (isSuccess) {
+                        Toast.makeText(this, "Berhasil Membuat Akun", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    }
+                }
+
+                registerViewModel.registerResult.observe(this) { result ->
+                    if (result.error) {
+                        Toast.makeText(this, result.description, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun errorAlert(isError: Boolean) {
+        if (isError) {
+            CustomAlert(this, R.string.errorRegister, R.drawable.error_image).show()
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBarRegister.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.loadingLayout.loadingDescTv.setText(R.string.processRegister)
+        if (isLoading) {
+            binding.loadingLayout.root.visibility = View.VISIBLE
+            binding.registerLayout.root.visibility = View.GONE
+
+        } else {
+            binding.loadingLayout.root.visibility = View.GONE
+            binding.registerLayout.root.visibility = View.VISIBLE
+        }
     }
 
-    companion object {
-        const val TAG = "Nahraf"
+    private fun animationHandler() {
+        binding.apply {
+
+            registerLayout.Titletv.alpha = 0f
+            registerLayout.nameEtLayout.alpha = 0f
+            registerLayout.emailEtLayout.alpha = 0f
+            registerLayout.passEtLayout.alpha = 0f
+            registerLayout.registerButton.alpha = 0f
+            registerLayout.loginTeksTv.alpha = 0f
+            registerLayout.buttonToLogin.alpha = 0f
+
+            val titleAnimator = ObjectAnimator.ofFloat(registerLayout.Titletv, View.ALPHA, 0f, 1f)
+            titleAnimator.duration = 1000
+
+            val nameLayoutAnimator = ObjectAnimator.ofFloat(registerLayout.nameEtLayout, View.ALPHA, 0f, 1f)
+            nameLayoutAnimator.duration = 1000
+
+            val emailLayoutAnimator = ObjectAnimator.ofFloat(registerLayout.emailEtLayout, View.ALPHA, 0f, 1f)
+            emailLayoutAnimator.duration = 1000
+
+            val passLayoutAnimator = ObjectAnimator.ofFloat(registerLayout.passEtLayout, View.ALPHA, 0f, 1f)
+            passLayoutAnimator.duration = 1000
+
+            val loginButtonAnimator = ObjectAnimator.ofFloat(registerLayout.registerButton, View.ALPHA, 0f, 1f)
+            loginButtonAnimator.duration = 1000
+
+            val loginTeksAnimator = ObjectAnimator.ofFloat(registerLayout.loginTeksTv, View.ALPHA, 0f, 1f)
+            loginTeksAnimator.duration = 1000
+
+            val buttonToLoginAnimator = ObjectAnimator.ofFloat(registerLayout.buttonToLogin, View.ALPHA, 0f, 1f)
+            buttonToLoginAnimator.duration = 1000
+
+
+            val animatorSet = AnimatorSet()
+            animatorSet.playSequentially(
+                titleAnimator,
+                nameLayoutAnimator,
+                emailLayoutAnimator,
+                passLayoutAnimator,
+                loginButtonAnimator,
+                loginTeksAnimator,
+                buttonToLoginAnimator
+            )
+
+            animatorSet.start()
+        }
     }
 }

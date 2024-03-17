@@ -1,67 +1,79 @@
 <resources>
-    <string name="app_name">StoryAppProject</string>
+    <string name="app_name">Butterfly Story</string>
 
-    <string name="welcome">Welcome</string>
-    <string name="signin">Sign In</string>
-    <string name="signup">Register</string>
+    <string name="signin">Masuk</string>
+    <string name="signup">Daftar</string>
 
     <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="name">Name</string>
+    <string name="password">Kata Sandi</string>
+    <string name="name">Nama</string>
 
     <string name="name_notif">Masukkan Nama Anda</string>
     <string name="email_notif">Masukkan Email Anda</string>
     <string name="password_notif">Masukkan Password Anda</string>
 
-    <string name="map">map</string>
-    <string name="language">language</string>
-    <string name="logout">log out</string>
-    <string name="showSetting">Setting</string>
+    <string name="upload">Posting</string>
 
-    <string name="upload">upload</string>
-
-
-<!--    editable    -->
-
-    <string name="login">Masuk</string>
-    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
-    <string name="message_login_page">Silahkan Masuk Terlebih Dahulu</string>
-    <string name="title_login_page">Ingin Memposting Ceritamu?</string>
-    <string name="greeting">Halo %1$s,\nBerikut daftar cerita yang dapat kamu baca.</string>
-    <string name="Daftar">Daftar</string>
-    <string name="username">username</string>
-    <string name="submit">submitNewStories</string>
-    <string name="camera_x">camera_x</string>
-    <string name="camera">camera</string>
-    <string name="gallery">galeri</string>
-    <string name="Deskripsi">Masukkan Deskripsimu</string>
-    <string name="showlogout">showLogout</string>
-    <string name="name_command">Masukkan nama anda</string>
-    <string name="email_command">Masukkan Email Anda</string>
-    <string name="password_command">Masukkan Password Baru</string>
-    <string name="belum_punya_akun_silahkan">Belum punya akun? silahkan</string>
-
-    <string name="email_signin">Masukkan Email Terlebih Dahulu</string>
-    <string name="password_signin">Masukkan Password Terlebih Dahulu</string>
-
-    <string name="password_requirement">Password need atleast 6 character</string>
-    <string name="email_requirement">Format email tidak sesuai</string>
-
-    <string name="camera_take_gagal">Gagal mengambil gambar</string>
-    <string name="camera_open_gagal">Gagal memunculkan kamera</string>
-    <string name="gagal_permission">Gagal mendapatkan izin</string>
-    <string name="choose_pictures">Pilih Gambar</string>
-    <string name="description_requirement">Masukkan deskripsi terlebih dahulu</string>
-
-    <string name="file_requirement">Masukkan berkas terlebih dahulu</string>
-
-
-    <string name="image_capture">image capture</string>
-    <string name="switch_camera">switch camera</string>
+    <string name="image_capture">ambil gambar</string>
+    <string name="switch_camera">ganti kamera</string>
     <string name="photo_detail">photo detail</string>
-    <string name="image_preview">image preview</string>
-    <string name="title_activity_maps" translatable="false">MapsActivity</string>
-    <string name="ganti_bahasa">Ganti Bahasa</string>
-    <string name="peta_cerita">Peta Cerita</string>
-    <string name="coba_lagi">coba lagi</string>
+    <string name="image_preview">gambar pratinjau</string>
+    <string name="navigation_drawer_open">Buka navigation drawer</string>
+    <string name="navigation_drawer_close">Tutup navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Pengaturan</string>
+
+    <string name="title_activity_story">StoryActivity</string>
+    <string name="menu_profile">Profil</string>
+    <string name="menu_stories">Cerita</string>
+    <string name="menu_setting">Pengaturan</string>
+    <string name="dateFormat">dd-mm-yyyy</string>
+    <string name="detailStory">Detail Cerita</string>
+    <string name="postStory">Unggah Cerita</string>
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="camerax">Camera X</string>
+    <string name="descText">Deskripsi</string>
+    <string name="post">Unggah</string>
+
+    <string name="dateAfter">"dd-MMM-yyyy"</string>
+
+    <string name="no_access">Anda membutuhkan izin kamera untuk menggunakan kamera</string>
+
+    <string name="logout">Keluar</string>
+    <string name="back">kembali halaman utama</string>
+    <string name="postTitle">Unggah Cerita</string>
+    <string name="toPostDesc">Ke Unggah Cerita</string>
+    <string name="tosharedesc">Bagikan</string>
+
+    <string name="daftarText">Belum Punya Akun?</string>
+    <string name="masukText">Sudah Punya Akun?</string>
+    <string name="username">username</string>
+
+    <string name="logoutSetting">Keluar Akun</string>
+    <string name="languageSetting">Ganti Bahasa</string>
+    <string name="themeSetting">Ganti Tema</string>
+
+    <string name="picAPhoto">ambil gambar</string>
+    <string name="rotateCam">putar Kamera</string>
+
+    <string name="errorLogin">Terdapat Masalah Saat Hendak Masuk</string>
+    <string name="errorRegister">Terdapat Masalah Saat Hendak Daftar</string>
+    <string name="okay">Oke</string>
+
+    <string name="errorEmail">Masukkan Email Yang Benar</string>
+    <string name="errorPass">Password Harus Memiliki Minimal 8 Karakter</string>
+    <string name="errorPost">Terjadi Kesalahan Saat Hendak Mengunggah</string>
+    <string name="successPost">Berhasil Mengunggah Cerita</string>
+    <string name="processPost">Sedang Proses Mengunggah</string>
+    <string name="processLogin">Sedang Proses Masuk</string>
+    <string name="processRegister">Sedang Proses Masuk</string>
+
+    <string name="spaceDesc">pembatas</string>
+    <string name="CreatorTv">Pembuat</string>
+    <string name="DescTv">Deskripsi</string>
+    <string name="detailImgDesc">gambar unggahan</string>
 </resources>
