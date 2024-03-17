@@ -15,6 +15,7 @@ import com.project.storyappproject.data.model.response.ListStoryItem
 import com.project.storyappproject.databinding.ActivityDetailStoryBinding
 import com.project.storyappproject.dateFormat
 
+
 @Suppress("DEPRECATION")
 class DetailStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailStoryBinding
@@ -36,6 +37,7 @@ class DetailStoryActivity : AppCompatActivity() {
         }
 
         val storyDetail = intent.getParcelableExtra<ListStoryItem>(DETAIL_STORY) as ListStoryItem
+
         setupView(storyDetail)
         fabActionHandler()
     }

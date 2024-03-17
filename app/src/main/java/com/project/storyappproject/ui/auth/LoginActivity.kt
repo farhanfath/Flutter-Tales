@@ -84,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun errorAlert(isError: Boolean) {
         if (isError) {
-            CustomAlert(this, R.string.errorRegister, R.drawable.error_image).show()
+            CustomAlert(this, R.string.errorLogin, R.drawable.error_image).show()
         }
     }
 
@@ -108,7 +108,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.loadingLayout.loadingDescTv.setText(R.string.processRegister)
+        binding.loadingLayout.loadingDescTv.setText(R.string.processLogin)
         if (isLoading) {
             binding.loadingLayout.root.visibility = View.VISIBLE
             binding.loginLayout.root.visibility = View.GONE

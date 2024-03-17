@@ -77,4 +77,5 @@
     <string name="CreatorTv">Creator</string>
     <string name="DescTv">Description</string>
     <string name="detailImgDesc">Posted Image</string>
+    <string name="descAlert">warning</string>
 </resources>

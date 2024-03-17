@@ -1,6 +1,5 @@
 package com.project.storyappproject
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -74,7 +73,7 @@ fun rotateImage(source: Bitmap, angle: Float): Bitmap {
     )
 }
 
-@SuppressLint("SimpleDateFormat")
+
 fun String.dateFormat(): String {
     val inputDateFormat = SimpleDateFormat(INPUT_FORMAT)
     inputDateFormat.timeZone = TimeZone.getTimeZone(INPUT_TIME_ZONE)

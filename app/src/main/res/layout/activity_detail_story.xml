@@ -59,13 +59,14 @@
                 android:contentDescription="@string/spaceDesc"/>
 
             <TextView
-                android:transitionName="sharedName"
                 android:id="@+id/nameDetailTv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
+                android:transitionName="sharedName"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userTitleTv"
                 tools:text="Username" />
@@ -118,13 +119,14 @@
                 android:contentDescription="@string/spaceDesc"/>
 
             <TextView
-                android:transitionName="sharedDesc"
                 android:id="@+id/descDetailTv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="16dp"
+                android:transitionName="sharedDesc"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/descTitleTv"
                 tools:text="Deskripsi" />

@@ -76,4 +76,5 @@
     <string name="CreatorTv">Pembuat</string>
     <string name="DescTv">Deskripsi</string>
     <string name="detailImgDesc">gambar unggahan</string>
+    <string name="descAlert">peringatan</string>
 </resources>
