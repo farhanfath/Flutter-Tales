@@ -30,6 +30,7 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_stories">Stories</string>
     <string name="menu_setting">Settings</string>
+    <string name="menu_maps">Maps</string>
     <string name="dateFormat">dd-mm-yyyy</string>
     <string name="detailStory">Stories Detail</string>
     <string name="postStory">Post Stories</string>

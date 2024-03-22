@@ -29,6 +29,7 @@
     <string name="menu_profile">Profil</string>
     <string name="menu_stories">Cerita</string>
     <string name="menu_setting">Pengaturan</string>
+    <string name="menu_maps">Peta</string>
     <string name="dateFormat">dd-mm-yyyy</string>
     <string name="detailStory">Detail Cerita</string>
     <string name="postStory">Unggah Cerita</string>

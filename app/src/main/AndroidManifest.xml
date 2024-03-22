@@ -25,6 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryAppProject"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDuog_FGjHgDvP0J3ldWR2sbiuX7a1tU_k" />
+
         <activity
             android:name=".ui.home.post.camerax.CameraActivity"
             android:exported="false" />
@@ -46,7 +51,7 @@
             android:exported="true" />
         <activity
             android:name=".ui.auth.LoginActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true">

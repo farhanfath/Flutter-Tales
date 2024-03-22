@@ -44,7 +44,7 @@ class StoryActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_story)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_stories, R.id.nav_profile, R.id.nav_setting
+                R.id.nav_stories, R.id.nav_profile, R.id.nav_setting, R.id.nav_maps
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
