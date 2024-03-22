@@ -41,6 +41,9 @@ class PostActivity : AppCompatActivity() {
     private lateinit var currentPhotoPath: String
     private var getFile: File? = null
 
+    private var latitude: Double? = null
+    private var longitude: Double? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -174,9 +177,9 @@ class PostActivity : AppCompatActivity() {
             if (!TextUtils.isEmpty(description) && getFile != null) {
                 lifecycleScope.launch {
                     showProgressBar()
-                    delay(1000)
                     try {
                         postViewModel.postStory(getFile!!, description)
+                        Log.d("testPost", "isi postingan : $description , $longitude, $latitude")
                         showSuccessAlert()
                     } catch (e: Exception) {
                         showErrorAlert()
