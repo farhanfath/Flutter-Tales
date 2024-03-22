@@ -72,6 +72,7 @@
     <string name="processPost">Sedang Proses Mengunggah</string>
     <string name="processLogin">Sedang Proses Masuk</string>
     <string name="processRegister">Sedang Proses Masuk</string>
+    <string name="processMap">Sedang Memproses Peta</string>
 
     <string name="spaceDesc">pembatas</string>
     <string name="CreatorTv">Pembuat</string>

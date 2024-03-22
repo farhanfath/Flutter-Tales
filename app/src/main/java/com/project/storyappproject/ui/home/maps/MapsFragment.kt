@@ -21,7 +21,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
     private lateinit var mMap: GoogleMap
     private val mapsViewModel: MapsViewModel by activityViewModels()
-
+    private var isMapLoaded = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        binding.loadingDescTv.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.mapContainer.visibility = View.INVISIBLE
+
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isMapLoaded) {
+            binding.loadingDescTv.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
+            binding.mapContainer.visibility = View.INVISIBLE
+        }
     }
 
     override fun onDestroyView() {
@@ -59,6 +72,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 )
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
             }
+            binding.loadingDescTv.visibility = View.INVISIBLE
+            binding.progressBar.visibility = View.INVISIBLE
+            binding.mapContainer.visibility = View.VISIBLE
+            isMapLoaded = true
         }
     }
 }
