@@ -2,6 +2,7 @@ package com.project.storyappproject.ui.home.maps
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,45 +22,37 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
     private val _listStories = MutableLiveData<List<ListStoryItem>>()
     val listStories: LiveData<List<ListStoryItem>> = _listStories
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean> = _isError
-
     init {
         getStories()
     }
 
     private fun getStories() {
         val token = UserPreference(context).getUser().token
-        _isError.value = false
-        _isLoading.value = false
-
         val client = token?.let {
-            ApiConfig().getApiService().getStories(token = "Bearer $it", size = 100, location = 0)
+            ApiConfig().getApiService().getStories(token = "Bearer $it", size = 100, location = 1)
         }
-
         client?.enqueue(object : Callback<StoriesResponse> {
             override fun onResponse(
                 call: Call<StoriesResponse>,
                 response: Response<StoriesResponse>
             ) {
-                if (response.body()?.error == false) {
-                    _listStories.value = response.body()?.listStory
-                    _isError.value = false
-                    _isLoading.value = false
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        _listStories.value = responseBody.listStory
+                    }
                 } else {
-                    _isError.value = true
-                    _isLoading.value = false
+                    Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<StoriesResponse>, t: Throwable) {
-                _isLoading.value = false
-                _isError.value = true
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
-
         })
+    }
+
+    companion object {
+        const val TAG = "mapsViewModel"
     }
 }
