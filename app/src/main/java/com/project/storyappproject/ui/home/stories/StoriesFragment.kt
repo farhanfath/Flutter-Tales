@@ -13,6 +13,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.storyappproject.adapter.StoryAdapter
@@ -21,6 +22,7 @@ import com.project.storyappproject.databinding.FragmentStoriesBinding
 import com.project.storyappproject.ui.home.DetailStoryActivity
 import com.project.storyappproject.ui.home.DetailStoryActivity.Companion.DETAIL_STORY
 import com.project.storyappproject.ui.home.post.PostActivity
+import kotlinx.coroutines.launch
 
 class StoriesFragment : Fragment() {
 
@@ -61,6 +63,19 @@ class StoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         postButtonHandler()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            binding.progressBarStories.visibility = View.VISIBLE
+            binding.rvStories.visibility = View.GONE
+
+            storiesViewModel.getStories()
+
+            binding.progressBarStories.visibility = View.GONE
+            binding.rvStories.visibility = View.VISIBLE
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
