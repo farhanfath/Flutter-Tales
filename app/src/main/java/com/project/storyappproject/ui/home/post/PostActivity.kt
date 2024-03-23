@@ -1,5 +1,6 @@
 package com.project.storyappproject.ui.home.post
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,6 +23,8 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.project.storyappproject.R
 import com.project.storyappproject.createCustomTempFile
 import com.project.storyappproject.databinding.ActivityPostBinding
@@ -30,7 +33,6 @@ import com.project.storyappproject.ui.customview.CustomSuccessAlert
 import com.project.storyappproject.ui.home.post.camerax.CameraActivity
 import com.project.storyappproject.ui.home.post.camerax.CameraActivity.Companion.CAMERAX_RESULT
 import com.project.storyappproject.uriToFile
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -41,8 +43,10 @@ class PostActivity : AppCompatActivity() {
     private lateinit var currentPhotoPath: String
     private var getFile: File? = null
 
-    private var latitude: Double? = null
-    private var longitude: Double? = null
+    private var storyLatitude: Double = 0.0
+    private var storyLongitude: Double = 0.0
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +59,8 @@ class PostActivity : AppCompatActivity() {
             insets
         }
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
         postViewModel.isLoading.observe(this) {
             showLoading(it)
         }
@@ -64,12 +70,32 @@ class PostActivity : AppCompatActivity() {
         }
 
         checkPermission()
+        fetchLocation()
 
         startGallery()
         startCamera()
         startCameraX()
         postStoryButton()
         backButton()
+    }
+
+    private fun fetchLocation() {
+        val task = fusedLocationProviderClient.lastLocation
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 101)
+            return
+        }
+        task.addOnSuccessListener {
+            if (it != null) {
+                storyLongitude = it.longitude
+                storyLatitude = it.latitude
+                Log.d("location tracker : ", "${it.longitude} , ${it.latitude}")
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -178,8 +204,8 @@ class PostActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     showProgressBar()
                     try {
-                        postViewModel.postStory(getFile!!, description)
-                        Log.d("testPost", "isi postingan : $description , $longitude, $latitude")
+                        postViewModel.postStory(getFile!!, description, storyLatitude, storyLongitude)
+                        Log.d("testPost", "isi postingan : $description , $storyLatitude, $storyLongitude")
                         showSuccessAlert()
                     } catch (e: Exception) {
                         showErrorAlert()
@@ -214,7 +240,6 @@ class PostActivity : AppCompatActivity() {
         CustomAlert(this, R.string.errorPost, R.drawable.alert_post_img).show()
     }
 
-
     private fun backButton() {
         binding.postLayout.backHome.setOnClickListener {
             finish()
@@ -226,7 +251,7 @@ class PostActivity : AppCompatActivity() {
     }
 
     companion object {
-        val PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+        val PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         const val CODE_PERMISSIONS = 10
     }
 }

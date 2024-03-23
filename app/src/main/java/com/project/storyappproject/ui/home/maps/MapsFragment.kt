@@ -1,6 +1,8 @@
 package com.project.storyappproject.ui.home.maps
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.storyappproject.R
 import com.project.storyappproject.databinding.FragmentMapsBinding
@@ -57,6 +60,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap) {
         mMap = p0
+        try {
+            val success = mMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(), R.raw.map_style
+                )
+            )
+            if (!success) {
+                Log.e("MapsFragmentStyle", "Failed Load Style")
+            }
+        } catch (e: Resources.NotFoundException) {
+            Log.e("MapsFragmentStyle", "Style Not Found", e)
+        }
+
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
         mMap.uiSettings.isCompassEnabled = true

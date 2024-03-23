@@ -19,6 +19,7 @@ import retrofit2.Response
 import java.io.File
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
+
     @SuppressLint("StaticFieldLeak")
     private val context = getApplication<Application>().applicationContext
 
@@ -28,7 +29,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
-    fun postStory(imageFile: File, desc: String) {
+    fun postStory(imageFile: File, desc: String, storyLatitude: Double, storyLongitude: Double) {
         _isLoading.value = true
         val file = reduceFileImage(imageFile)
 
@@ -47,8 +48,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 token = "Bearer $it",
                 file = imageMultipart,
                 description = description,
-                lat = 0F,
-                lon = 0F
+                lat = storyLatitude,
+                lon = storyLongitude
             )
         }
 
