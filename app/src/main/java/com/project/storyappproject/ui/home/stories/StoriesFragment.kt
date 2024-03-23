@@ -26,7 +26,6 @@ class StoriesFragment : Fragment() {
 
     private var _binding: FragmentStoriesBinding? = null
     private val binding get() = _binding!!
-//    private val storiesViewModel: StoriesViewModel by activityViewModels()
     private lateinit var factory: ViewModelFactory
     private val storiesViewModel: StoriesViewModel by viewModels { factory }
 
