@@ -34,6 +34,7 @@ import com.project.storyappproject.ui.home.StoryActivity
 import com.project.storyappproject.ui.home.post.camerax.CameraActivity
 import com.project.storyappproject.ui.home.post.camerax.CameraActivity.Companion.CAMERAX_RESULT
 import com.project.storyappproject.utility.uriToFile
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -204,6 +205,7 @@ class PostActivity : AppCompatActivity() {
             if (!TextUtils.isEmpty(description) && getFile != null) {
                 lifecycleScope.launch {
                     showProgressBar()
+                    delay(SPACE_TIME)
                     try {
                         postViewModel.postStory(getFile!!, description, storyLatitude, storyLongitude)
                         Log.d("testPost", "isi postingan : $description , $storyLatitude, $storyLongitude")
@@ -234,6 +236,7 @@ class PostActivity : AppCompatActivity() {
             val intent = Intent(this, StoryActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
+            finish()
             binding.postLayout.root.visibility = View.VISIBLE
         }
         customSuccessAlert.show()
@@ -256,5 +259,6 @@ class PostActivity : AppCompatActivity() {
     companion object {
         val PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         const val CODE_PERMISSIONS = 10
+        const val SPACE_TIME = 1000L
     }
 }

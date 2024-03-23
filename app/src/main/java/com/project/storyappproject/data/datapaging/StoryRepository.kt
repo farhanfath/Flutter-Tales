@@ -26,16 +26,4 @@ class StoryRepository(private val context: Context, private val apiService: ApiS
 
         ).liveData
     }
-
-//    companion object {
-//        @Volatile
-//        private var instance: StoryRepository? = null
-//        fun getInstance(
-//            preferences: UserPreference,
-//            apiService: ApiService
-//        ): StoryRepository =
-//            instance ?: synchronized(this) {
-//                instance ?: StoryRepository(preferences, apiService)
-//            }.also { instance = it }
-//    }
 }

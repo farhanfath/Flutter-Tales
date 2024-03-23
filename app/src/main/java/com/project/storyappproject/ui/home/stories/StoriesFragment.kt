@@ -11,6 +11,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.storyappproject.adapter.LoadingStateAdapter
@@ -21,6 +22,8 @@ import com.project.storyappproject.ui.home.DetailStoryActivity
 import com.project.storyappproject.ui.home.DetailStoryActivity.Companion.DETAIL_STORY
 import com.project.storyappproject.ui.home.post.PostActivity
 import com.project.storyappproject.utility.ViewModelFactory
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class StoriesFragment : Fragment() {
 
@@ -41,7 +44,6 @@ class StoriesFragment : Fragment() {
         val root: View = binding.root
 
         viewModelHandler()
-        showListStories(root.context)
         postButtonHandler()
 
         return root
@@ -51,15 +53,23 @@ class StoriesFragment : Fragment() {
         factory = ViewModelFactory.getInstance(binding.root.context)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         context?.let { showListStories(it) }
-        refreshStories()
     }
 
-    private fun refreshStories() {
-        storiesViewModel.getListStory.observe(viewLifecycleOwner) { listStory ->
-            storyAdapter.submitData(lifecycle, listStory)
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            binding.progressBarStories.visibility = View.VISIBLE
+            binding.rvStories.visibility = View.GONE
+
+            delay(PostActivity.SPACE_TIME)
+
+            context?.let { showListStories(it) }
+
+            binding.progressBarStories.visibility = View.GONE
+            binding.rvStories.visibility = View.VISIBLE
         }
     }
 
@@ -78,7 +88,6 @@ class StoriesFragment : Fragment() {
     private fun showListStories(context: Context) {
         storyAdapter = StoryAdapter()
         val storiesRv = binding.rvStories
-//        storiesRv.adapter = storyAdapter
 
         if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             storiesRv.layoutManager = GridLayoutManager(context, 2)
