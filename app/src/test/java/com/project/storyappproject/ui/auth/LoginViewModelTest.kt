@@ -38,15 +38,12 @@ class LoginViewModelTest {
     fun `login success should update live data`() {
         val loginExample = generateExampleLogin()
 
-        // Mock ApiService
         val mockCall = mock(Call::class.java) as Call<AuthResponse>
         `when`(apiService.postLogin("test@example.com", "password")).thenReturn(mockCall)
 
-        // Call onResponse with dummy response
         viewModel.userLogin("test@example.com", "password")
         (mockCall as Callback<AuthResponse>).onResponse(mockCall, Response.success(loginExample))
 
-        // Check if live data updated correctly
         assertEquals(false, viewModel.isLoading.value)
         assertEquals(false, viewModel.isError.value)
         assertEquals(true, viewModel.isSuccess.value)
@@ -58,7 +55,6 @@ class LoginViewModelTest {
         val mockCall = mock(Call::class.java) as Call<AuthResponse>
         `when`(apiService.postLogin("test@example.com", "password")).thenReturn(mockCall)
 
-        // Call onFailure
         viewModel.userLogin("test@example.com", "password")
         (mockCall as Callback<AuthResponse>).onFailure(mockCall, Throwable())
 

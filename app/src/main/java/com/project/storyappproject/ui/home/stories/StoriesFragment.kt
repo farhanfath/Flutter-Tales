@@ -51,6 +51,18 @@ class StoriesFragment : Fragment() {
         factory = ViewModelFactory.getInstance(binding.root.context)
     }
 
+    override fun onResume() {
+        super.onResume()
+        context?.let { showListStories(it) }
+        refreshStories()
+    }
+
+    private fun refreshStories() {
+        storiesViewModel.getListStory.observe(viewLifecycleOwner) { listStory ->
+            storyAdapter.submitData(lifecycle, listStory)
+        }
+    }
+
     private fun openDetailStory(story: ListStoryItem, sharedViews: Array<Pair<View, String>>) {
         val intent = Intent(binding.root.context, DetailStoryActivity::class.java)
         intent.putExtra(DETAIL_STORY, story)
@@ -66,7 +78,7 @@ class StoriesFragment : Fragment() {
     private fun showListStories(context: Context) {
         storyAdapter = StoryAdapter()
         val storiesRv = binding.rvStories
-        storiesRv.adapter = storyAdapter
+//        storiesRv.adapter = storyAdapter
 
         if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             storiesRv.layoutManager = GridLayoutManager(context, 2)
