@@ -16,8 +16,9 @@ import com.project.storyappproject.data.model.response.StoriesResponse
 import com.project.storyappproject.getOrAwaitValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,31 +37,45 @@ class StoriesViewModelTest {
 
     @Mock
     private lateinit var storyRepository: StoryRepository
-    private var dummyStory = generateDummyStories()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when Get Story Should Not Null and Return Success`() = mainDispatcherRules.runBlockingTest {
+    fun `when Get Story Should Not Null and Return Data`() = runTest {
+        val dummyStory = generateDummyStories()
         val data: PagingData<ListStoryItem> = StoriesPagingSource.snapshot(dummyStory.listStory)
-        val expectedResponse = MutableLiveData<PagingData<ListStoryItem>>()
-
-        expectedResponse.value = data
-        Mockito.`when`(storyRepository.getListStories()).thenReturn(expectedResponse)
+        val expectedQuote = MutableLiveData<PagingData<ListStoryItem>>()
+        expectedQuote.value = data
+        Mockito.`when`(storyRepository.getListStories()).thenReturn(expectedQuote)
 
         val storiesViewModel = StoriesViewModel(storyRepository)
-        val actualStory: PagingData<ListStoryItem> = storiesViewModel.getListStory.getOrAwaitValue()
+        val actualQuote: PagingData<ListStoryItem> = storiesViewModel.getListStory.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
             updateCallback = noopListUpdateCallback,
             workerDispatcher = Dispatchers.Main,
         )
-        differ.submitData(actualStory)
+        differ.submitData(actualQuote)
 
         Assert.assertNotNull(differ.snapshot())
-        Assert.assertEquals(dummyStory.listStory, differ.snapshot())
-        Assert.assertEquals(dummyStory.listStory.size, differ.snapshot().size)
-        Assert.assertEquals(dummyStory.listStory[0].name, differ.snapshot()[0]?.name)
+        assertEquals(dummyStory.listStory.size, differ.snapshot().size)
+        assertEquals(dummyStory.listStory[0], differ.snapshot()[0])
+    }
+
+    @Test
+    fun `when Get Story Empty Should Return No Data`() = runTest {
+        val data: PagingData<ListStoryItem> = PagingData.from(emptyList())
+        val expectedQuote = MutableLiveData<PagingData<ListStoryItem>>()
+        expectedQuote.value = data
+        Mockito.`when`(storyRepository.getListStories()).thenReturn(expectedQuote)
+        val storiesViewModel = StoriesViewModel(storyRepository)
+        val actualQuote: PagingData<ListStoryItem> = storiesViewModel.getListStory.getOrAwaitValue()
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = StoryAdapter.DIFF_CALLBACK,
+            updateCallback = noopListUpdateCallback,
+            workerDispatcher = Dispatchers.Main,
+        )
+        differ.submitData(actualQuote)
+        assertEquals(0, differ.snapshot().size)
     }
 }
 

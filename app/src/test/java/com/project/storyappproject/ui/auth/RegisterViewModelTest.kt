@@ -34,25 +34,21 @@ class RegisterViewModelTest {
 
     @Test
     fun `user register success`() {
-        // Mock response
         val postResponse = PostResponse(error = false, message = "Success", description = "berhasil register")
         val call = MockCall(postResponse)
         Mockito.`when`(apiService.postRegister(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(call)
 
-        // Observers
         val isLoadingObserver = Observer<Boolean> {}
         val isSuccessObserver = Observer<Boolean> {}
         val isErrorObserver = Observer<Boolean> {}
         val registerResultObserver = Observer<PostResponse> {}
 
-        // Attach observers
         viewModel.isLoading.observeForever(isLoadingObserver)
         viewModel.isSuccess.observeForever(isSuccessObserver)
         viewModel.isError.observeForever(isErrorObserver)
         viewModel.registerResult.observeForever(registerResultObserver)
 
-        // Perform registration
-        viewModel.userRegister("Farhan Test", "passwordTest123456789", "farhanTest@example.com")
+        viewModel.userRegister("FarhanTest", "passwordTest123456789", "farhanTest@example.com")
 
         assertEquals(true, viewModel.isLoading.value)
         assertEquals(false, viewModel.isSuccess.value)
@@ -63,7 +59,6 @@ class RegisterViewModelTest {
         assertEquals(false, viewModel.isError.value)
         assertEquals(postResponse, viewModel.registerResult.value)
 
-        // Clean up
         viewModel.isLoading.removeObserver(isLoadingObserver)
         viewModel.isSuccess.removeObserver(isSuccessObserver)
         viewModel.isError.removeObserver(isErrorObserver)

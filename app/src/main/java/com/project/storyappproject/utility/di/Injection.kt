@@ -9,7 +9,6 @@ import com.project.storyappproject.data.datastore.UserPreference
 object Injection {
     fun provideRepository(context: Context): StoryRepository {
         val database = StoryDatabase.getDatabase(context)
-//        val preferences = UserPreference(context)
         val apiService = ApiConfig().getApiService()
         return StoryRepository(context, apiService, database)
     }

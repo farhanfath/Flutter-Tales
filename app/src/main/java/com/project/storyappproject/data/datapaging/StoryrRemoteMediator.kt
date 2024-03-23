@@ -13,8 +13,7 @@ import com.project.storyappproject.data.datastore.UserPreference
 import com.project.storyappproject.data.model.response.ListStoryItem
 
 @OptIn(ExperimentalPagingApi::class)
-class   StoryRemoteMediator(
-
+class StoryRemoteMediator(
     context: Context,
     private val database: StoryDatabase,
     private val apiService: ApiService
