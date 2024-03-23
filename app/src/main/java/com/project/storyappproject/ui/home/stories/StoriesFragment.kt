@@ -4,32 +4,38 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.project.storyappproject.adapter.LoadingStateAdapter
 import com.project.storyappproject.adapter.StoryAdapter
 import com.project.storyappproject.data.model.response.ListStoryItem
 import com.project.storyappproject.databinding.FragmentStoriesBinding
 import com.project.storyappproject.ui.home.DetailStoryActivity
 import com.project.storyappproject.ui.home.DetailStoryActivity.Companion.DETAIL_STORY
 import com.project.storyappproject.ui.home.post.PostActivity
+import com.project.storyappproject.utility.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class StoriesFragment : Fragment() {
 
     private var _binding: FragmentStoriesBinding? = null
     private val binding get() = _binding!!
-    private val storiesViewModel: StoriesViewModel by activityViewModels()
-    private var isLoading = false
+//    private val storiesViewModel: StoriesViewModel by activityViewModels()
+    private lateinit var factory: ViewModelFactory
+    private val storiesViewModel: StoriesViewModel by viewModels { factory }
+
+    private lateinit var storyAdapter: StoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,52 +46,15 @@ class StoriesFragment : Fragment() {
         _binding = FragmentStoriesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        storiesViewModel.listStories.observe(viewLifecycleOwner) {
-            val isEmptyUser = it.isEmpty()
-            if (isEmptyUser) {
-                Toast.makeText(activity, "Unknown User", Toast.LENGTH_SHORT).show()
-            } else {
-                showListStories(root.context, it)
-            }
-        }
-        storiesViewModel.isLoading.observe(viewLifecycleOwner) {
-            showLoading(it)
-        }
-
-        storiesViewModel.isError.observe(viewLifecycleOwner) {
-            Log.d("test", "gagal memuat story")
-        }
+        viewModelHandler()
+        showListStories(root.context)
+        postButtonHandler()
 
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        postButtonHandler()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        lifecycleScope.launch {
-            binding.progressBarStories.visibility = View.VISIBLE
-            binding.rvStories.visibility = View.GONE
-
-            storiesViewModel.getStories()
-
-            binding.progressBarStories.visibility = View.GONE
-            binding.rvStories.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBarStories.visibility = View.VISIBLE
-            binding.rvStories.visibility = View.GONE
-        } else{
-            binding.progressBarStories.visibility = View.GONE
-            binding.rvStories.visibility = View.VISIBLE
-        }
+    private fun viewModelHandler() {
+        factory = ViewModelFactory.getInstance(binding.root.context)
     }
 
     private fun openDetailStory(story: ListStoryItem, sharedViews: Array<Pair<View, String>>) {
@@ -100,22 +69,28 @@ class StoriesFragment : Fragment() {
         startActivity(intent, optionsCompat.toBundle())
     }
 
-    private fun showListStories(context: Context, stories: List<ListStoryItem>) {
+    private fun showListStories(context: Context) {
+        storyAdapter = StoryAdapter()
         val storiesRv = binding.rvStories
+        storiesRv.adapter = storyAdapter
 
-        isLoading = true
-        binding.progressBarStories.visibility = View.VISIBLE
-        binding.rvStories.visibility = View.GONE
-
-        val listStoriesAdapter = StoryAdapter(stories)
-        storiesRv.adapter = listStoriesAdapter
         if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             storiesRv.layoutManager = GridLayoutManager(context, 2)
         } else {
             storiesRv.layoutManager = LinearLayoutManager(context)
         }
 
-        listStoriesAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
+        storiesRv.adapter = storyAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                storyAdapter.retry()
+            }
+        )
+
+        storiesViewModel.getListStory.observe(viewLifecycleOwner) {
+            storyAdapter.submitData(lifecycle, it)
+        }
+
+        storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
 
             override fun onItemClicked(
                 data: ListStoryItem,
@@ -124,10 +99,6 @@ class StoriesFragment : Fragment() {
                 openDetailStory(data, sharedViews)
             }
         })
-
-        isLoading = false
-        binding.progressBarStories.visibility = View.GONE
-        binding.rvStories.visibility = View.VISIBLE
     }
 
     private fun postButtonHandler() {

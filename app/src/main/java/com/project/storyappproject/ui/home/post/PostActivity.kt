@@ -26,13 +26,14 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.project.storyappproject.R
-import com.project.storyappproject.createCustomTempFile
+import com.project.storyappproject.utility.createCustomTempFile
 import com.project.storyappproject.databinding.ActivityPostBinding
 import com.project.storyappproject.ui.customview.CustomAlert
 import com.project.storyappproject.ui.customview.CustomSuccessAlert
+import com.project.storyappproject.ui.home.StoryActivity
 import com.project.storyappproject.ui.home.post.camerax.CameraActivity
 import com.project.storyappproject.ui.home.post.camerax.CameraActivity.Companion.CAMERAX_RESULT
-import com.project.storyappproject.uriToFile
+import com.project.storyappproject.utility.uriToFile
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -230,7 +231,9 @@ class PostActivity : AppCompatActivity() {
 
     private fun showSuccessAlert() {
         val customSuccessAlert = CustomSuccessAlert(this, R.string.successPost, R.drawable.success_post_alert_img) {
-            finish()
+            val intent = Intent(this, StoryActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
             binding.postLayout.root.visibility = View.VISIBLE
         }
         customSuccessAlert.show()

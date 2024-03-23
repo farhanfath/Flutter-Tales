@@ -1,4 +1,4 @@
-package com.project.storyappproject
+package com.project.storyappproject.utility
 
 import android.content.Context
 import android.graphics.Bitmap

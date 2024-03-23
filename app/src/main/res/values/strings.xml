@@ -79,4 +79,7 @@
     <string name="DescTv">Deskripsi</string>
     <string name="detailImgDesc">gambar unggahan</string>
     <string name="descAlert">peringatan</string>
+
+    <string name="retryBtn">Coba Lagi</string>
+    <string name="timeoutAlert">Waktu Habis</string>
 </resources>

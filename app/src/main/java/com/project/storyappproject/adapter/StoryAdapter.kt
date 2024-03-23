@@ -4,17 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.storyappproject.data.model.response.ListStoryItem
 import com.project.storyappproject.databinding.StoryItemRowBinding
-import com.project.storyappproject.dateFormat
+import com.project.storyappproject.utility.dateFormat
 
-class StoryAdapter(
-    private val listStories: List<ListStoryItem>
-) : RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
+class StoryAdapter :
+    PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
 
-    private lateinit var onItemClickCallback: OnItemClickCallback
+    private var onItemClickCallback: OnItemClickCallback? = null
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -24,12 +25,14 @@ class StoryAdapter(
         val binding =
             StoryItemRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
+
     }
 
-    override fun getItemCount(): Int = listStories.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listStories[position], onItemClickCallback)
+        val listStories = getItem(position)
+        if (listStories != null) {
+            onItemClickCallback?.let { holder.bind(story = listStories, it) }
+        }
     }
 
     class ViewHolder(private val binding: StoryItemRowBinding) :
@@ -44,12 +47,14 @@ class StoryAdapter(
                 storyDesc.text = story.description
                 storyDate.text = story.createdAt.dateFormat()
                 storyCv.setOnClickListener {
-                    clickCallback.onItemClicked(story, arrayOf(
-                        Pair(photo, "sharedPhoto"),
-                        Pair(storyName, "sharedName"),
-                        Pair(storyDesc, "sharedDesc"),
-                        Pair(storyDate, "sharedDate")
-                    ))
+                    clickCallback.onItemClicked(
+                        story, arrayOf(
+                            Pair(photo, "sharedPhoto"),
+                            Pair(storyName, "sharedName"),
+                            Pair(storyDesc, "sharedDesc"),
+                            Pair(storyDate, "sharedDate")
+                        )
+                    )
                 }
             }
         }
@@ -59,4 +64,18 @@ class StoryAdapter(
         fun onItemClicked(data: ListStoryItem, sharedViews: Array<Pair<View, String>>)
     }
 
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: ListStoryItem,
+                newItem: ListStoryItem
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
 }

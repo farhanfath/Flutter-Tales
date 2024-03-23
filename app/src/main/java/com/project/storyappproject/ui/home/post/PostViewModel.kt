@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.project.storyappproject.data.api.ApiConfig
 import com.project.storyappproject.data.datastore.UserPreference
 import com.project.storyappproject.data.model.response.PostStoriesResponse
-import com.project.storyappproject.reduceFileImage
+import com.project.storyappproject.utility.reduceFileImage
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

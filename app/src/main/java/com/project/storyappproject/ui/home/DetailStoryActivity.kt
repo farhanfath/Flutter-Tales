@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.project.storyappproject.R
 import com.project.storyappproject.data.model.response.ListStoryItem
 import com.project.storyappproject.databinding.ActivityDetailStoryBinding
-import com.project.storyappproject.dateFormat
+import com.project.storyappproject.utility.dateFormat
 
 
 @Suppress("DEPRECATION")
@@ -57,9 +57,6 @@ class DetailStoryActivity : AppCompatActivity() {
 
     private fun fabActionHandler() {
         binding.apply {
-            backHome.setOnClickListener {
-                finish()
-            }
             showBtn.setOnClickListener {
                 onAddButtonClicked()
             }
@@ -70,6 +67,12 @@ class DetailStoryActivity : AppCompatActivity() {
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, "Send To"))
             }
+        }
+        binding.backHome.setOnClickListener {
+            val intent = Intent(this, StoryActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            finish()
         }
     }
 

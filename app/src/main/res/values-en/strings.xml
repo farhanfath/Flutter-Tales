@@ -80,4 +80,7 @@
     <string name="DescTv">Description</string>
     <string name="detailImgDesc">Posted Image</string>
     <string name="descAlert">warning</string>
+
+    <string name="retryBtn">Retry</string>
+    <string name="timeoutAlert">Time Out</string>
 </resources>

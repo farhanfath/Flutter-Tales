@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.storyappproject.R
-import com.project.storyappproject.createCustomTempFile
+import com.project.storyappproject.utility.createCustomTempFile
 import com.project.storyappproject.databinding.ActivityCameraBinding
 
 class CameraActivity : AppCompatActivity() {
