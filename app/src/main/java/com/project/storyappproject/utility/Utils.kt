@@ -73,7 +73,6 @@ fun rotateImage(source: Bitmap, angle: Float): Bitmap {
     )
 }
 
-
 fun String.dateFormat(): String {
     val inputDateFormat = SimpleDateFormat(INPUT_FORMAT)
     inputDateFormat.timeZone = TimeZone.getTimeZone(INPUT_TIME_ZONE)

@@ -16,7 +16,7 @@ class StoryPagingSource(
             val token = pref.getUser().token.toString()
 
             if (token.isNotEmpty()) {
-                val responseData = token.let { apiService.getPagingStories("Bearer $it", page, params.loadSize, 0) }
+                val responseData = token.let { apiService.getPagingStories("Bearer $it", page, params.loadSize, 1) }
                 if (responseData.isSuccessful) {
                     LoadResult.Page(
                         data = responseData.body()?.listStory ?: emptyList(),

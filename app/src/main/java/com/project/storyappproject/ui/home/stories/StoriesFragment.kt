@@ -10,13 +10,9 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.project.storyappproject.adapter.LoadingStateAdapter
 import com.project.storyappproject.adapter.StoryAdapter
 import com.project.storyappproject.data.model.response.ListStoryItem
@@ -25,7 +21,6 @@ import com.project.storyappproject.ui.home.DetailStoryActivity
 import com.project.storyappproject.ui.home.DetailStoryActivity.Companion.DETAIL_STORY
 import com.project.storyappproject.ui.home.post.PostActivity
 import com.project.storyappproject.utility.ViewModelFactory
-import kotlinx.coroutines.launch
 
 class StoriesFragment : Fragment() {
 
