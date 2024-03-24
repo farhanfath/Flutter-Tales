@@ -1,5 +1,6 @@
 package com.project.storyappproject.data.api
 
+import com.project.storyappproject.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,6 +22,6 @@ class ApiConfig {
         }
 
     companion object {
-        const val BASE_URL = "https://story-api.dicoding.dev/v1/"
+        const val BASE_URL = BuildConfig.BASE_URL
     }
 }

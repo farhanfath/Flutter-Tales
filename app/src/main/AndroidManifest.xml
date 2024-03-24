@@ -29,9 +29,10 @@
         android:theme="@style/Theme.StoryAppProject"
         tools:targetApi="31">
 
+        <!--        use your map API key here       -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="YOUR_API_KEY"/>
 
         <activity
             android:name=".ui.home.post.camerax.CameraActivity"
