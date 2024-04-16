@@ -66,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 registerViewModel.isSuccess.observe(this) { isSuccess ->
                     if (isSuccess) {
-                        Toast.makeText(this, "Berhasil Membuat Akun", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, R.string.registerSuccess, Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
                     }
@@ -111,25 +111,25 @@ class RegisterActivity : AppCompatActivity() {
             registerLayout.buttonToLogin.alpha = 0f
 
             val titleAnimator = ObjectAnimator.ofFloat(registerLayout.Titletv, View.ALPHA, 0f, 1f)
-            titleAnimator.duration = 1000
+            titleAnimator.duration = 700
 
             val nameLayoutAnimator = ObjectAnimator.ofFloat(registerLayout.nameEtLayout, View.ALPHA, 0f, 1f)
-            nameLayoutAnimator.duration = 1000
+            nameLayoutAnimator.duration = 700
 
             val emailLayoutAnimator = ObjectAnimator.ofFloat(registerLayout.emailEtLayout, View.ALPHA, 0f, 1f)
-            emailLayoutAnimator.duration = 1000
+            emailLayoutAnimator.duration = 700
 
             val passLayoutAnimator = ObjectAnimator.ofFloat(registerLayout.passEtLayout, View.ALPHA, 0f, 1f)
-            passLayoutAnimator.duration = 1000
+            passLayoutAnimator.duration = 700
 
             val loginButtonAnimator = ObjectAnimator.ofFloat(registerLayout.registerButton, View.ALPHA, 0f, 1f)
-            loginButtonAnimator.duration = 1000
+            loginButtonAnimator.duration = 700
 
             val loginTeksAnimator = ObjectAnimator.ofFloat(registerLayout.loginTeksTv, View.ALPHA, 0f, 1f)
-            loginTeksAnimator.duration = 1000
+            loginTeksAnimator.duration = 700
 
             val buttonToLoginAnimator = ObjectAnimator.ofFloat(registerLayout.buttonToLogin, View.ALPHA, 0f, 1f)
-            buttonToLoginAnimator.duration = 1000
+            buttonToLoginAnimator.duration = 700
 
 
             val animatorSet = AnimatorSet()

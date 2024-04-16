@@ -43,6 +43,7 @@ class SettingsFragment : Fragment() {
 
         logOutAction()
         languageAction()
+        locationAction()
         currentTheme(root.context)
         changeTheme(root.context)
         animationHandler()
@@ -67,6 +68,13 @@ class SettingsFragment : Fragment() {
     private fun languageAction() {
         binding.languageCv.setOnClickListener {
             startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+        }
+    }
+
+    private fun locationAction() {
+        binding.locationCv.setOnClickListener {
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            context?.startActivity(intent)
         }
     }
 
@@ -102,20 +110,25 @@ class SettingsFragment : Fragment() {
             themeCv.alpha = 0f
             languageCv.alpha = 0f
             logoutCv.alpha = 0f
+            locationCv.alpha = 0f
 
             val themeCvAnimator = ObjectAnimator.ofFloat(themeCv, View.ALPHA, 0f, 1f)
-            themeCvAnimator.duration = 1000
+            themeCvAnimator.duration = 700
 
             val languageCvAnimator = ObjectAnimator.ofFloat(languageCv, View.ALPHA, 0f, 1f)
-            languageCvAnimator.duration = 1000
+            languageCvAnimator.duration = 700
+
+            val locationCvAnimator = ObjectAnimator.ofFloat(locationCv, View.ALPHA, 0f, 1f)
+            locationCvAnimator.duration = 700
 
             val logoutCvAnimator = ObjectAnimator.ofFloat(logoutCv, View.ALPHA, 0f, 1f)
-            logoutCvAnimator.duration = 1000
+            logoutCvAnimator.duration = 700
 
             val animatorSet = AnimatorSet()
             animatorSet.playSequentially(
                 themeCvAnimator,
                 languageCvAnimator,
+                locationCvAnimator,
                 logoutCvAnimator
             )
 

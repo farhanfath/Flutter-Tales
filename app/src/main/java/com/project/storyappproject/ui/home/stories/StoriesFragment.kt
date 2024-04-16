@@ -1,5 +1,6 @@
 package com.project.storyappproject.ui.home.stories
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
@@ -24,6 +26,8 @@ import com.project.storyappproject.ui.home.post.PostActivity
 import com.project.storyappproject.utility.ViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 class StoriesFragment : Fragment() {
 
@@ -45,6 +49,9 @@ class StoriesFragment : Fragment() {
 
         viewModelHandler()
         postButtonHandler()
+        refreshHandler()
+
+        showListStories()
 
         return root
     }
@@ -55,21 +62,34 @@ class StoriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let { showListStories(it) }
+        showListStories()
     }
 
-    override fun onResume() {
-        super.onResume()
+//    override fun onResume() {
+//        super.onResume()
+//        context?.let { showListStories(it) }
+//    }
+
+    private fun showListStories() {
+        context?.let { showListStories(it) }
         lifecycleScope.launch {
-            binding.progressBarStories.visibility = View.VISIBLE
-            binding.rvStories.visibility = View.GONE
-
             delay(PostActivity.SPACE_TIME)
+            refresh()
+        }
+    }
 
-            context?.let { showListStories(it) }
+    private fun refresh() {
+        binding.swipeRefresh.isRefreshing = true
+        storyAdapter.refresh()
+        Timer().schedule(1000) {
+            binding.swipeRefresh.isRefreshing = false
+            binding.rvStories.smoothScrollToPosition(0)
+        }
+    }
 
-            binding.progressBarStories.visibility = View.GONE
-            binding.rvStories.visibility = View.VISIBLE
+    private fun refreshHandler() {
+        binding.swipeRefresh.setOnRefreshListener {
+            refresh()
         }
     }
 
@@ -116,10 +136,21 @@ class StoriesFragment : Fragment() {
         })
     }
 
+    private val postActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            lifecycleScope.launch {
+                delay(PostActivity.SPACE_TIME)
+                refresh()
+            }
+        }
+    }
+
     private fun postButtonHandler() {
         binding.createStoryButton.setOnClickListener {
             val intent = Intent(binding.root.context, PostActivity::class.java)
-            startActivity(intent)
+            postActivityResultLauncher.launch(intent)
         }
     }
 

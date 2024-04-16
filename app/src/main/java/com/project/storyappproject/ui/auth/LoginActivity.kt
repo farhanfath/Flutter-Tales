@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
                 loginViewModel.loginResult.observe(this) {
                     loginHandler(it)
-                    Toast.makeText(this, "Berhasil Login", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.loginSuccess, Toast.LENGTH_SHORT).show()
                 }
 
                 loginViewModel.isSuccess.observe(this) {
@@ -130,22 +130,22 @@ class LoginActivity : AppCompatActivity() {
             loginLayout.buttonToRegister.alpha = 0f
 
             val titleAnimator = ObjectAnimator.ofFloat(loginLayout.Titletv, View.ALPHA, 0f, 1f)
-            titleAnimator.duration = 1000
+            titleAnimator.duration = 700
 
             val emailLayoutAnimator = ObjectAnimator.ofFloat(loginLayout.emailEtLayout, View.ALPHA, 0f, 1f)
-            emailLayoutAnimator.duration = 1000
+            emailLayoutAnimator.duration = 700
 
             val passLayoutAnimator = ObjectAnimator.ofFloat(loginLayout.passEtLayout, View.ALPHA, 0f, 1f)
-            passLayoutAnimator.duration = 1000
+            passLayoutAnimator.duration = 700
 
             val loginButtonAnimator = ObjectAnimator.ofFloat(loginLayout.loginButton, View.ALPHA, 0f, 1f)
-            loginButtonAnimator.duration = 1000
+            loginButtonAnimator.duration = 700
 
             val registerTextAnimator = ObjectAnimator.ofFloat(loginLayout.regsiterTeksTv, View.ALPHA, 0f, 1f)
-            registerTextAnimator.duration = 1000
+            registerTextAnimator.duration = 700
 
             val registerButtonAnimator = ObjectAnimator.ofFloat(loginLayout.buttonToRegister, View.ALPHA, 0f, 1f)
-            registerButtonAnimator.duration = 1000
+            registerButtonAnimator.duration = 700
 
             val animatorSet = AnimatorSet()
             animatorSet.playSequentially(

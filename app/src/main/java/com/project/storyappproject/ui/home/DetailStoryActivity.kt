@@ -45,7 +45,7 @@ class DetailStoryActivity : AppCompatActivity() {
     private fun setupView(storyDetail: ListStoryItem) {
         Glide.with(this@DetailStoryActivity)
             .load(storyDetail.photoUrl)
-            .fitCenter()
+            .centerCrop()
             .into(binding.storyDetailIv)
 
         storyDetail.apply {
@@ -69,10 +69,7 @@ class DetailStoryActivity : AppCompatActivity() {
             }
         }
         binding.backHome.setOnClickListener {
-            val intent = Intent(this, StoryActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-            finish()
+            onBackPressed()
         }
     }
 

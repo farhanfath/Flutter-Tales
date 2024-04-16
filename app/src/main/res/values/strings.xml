@@ -57,6 +57,7 @@
     <string name="logoutSetting">Keluar Akun</string>
     <string name="languageSetting">Ganti Bahasa</string>
     <string name="themeSetting">Ganti Tema</string>
+    <string name="locationSetting">Aktifkan Lokasi</string>
 
     <string name="picAPhoto">ambil gambar</string>
     <string name="rotateCam">putar Kamera</string>
@@ -71,8 +72,11 @@
     <string name="successPost">Berhasil Mengunggah Cerita</string>
     <string name="processPost">Sedang Proses Mengunggah</string>
     <string name="processLogin">Sedang Proses Masuk</string>
-    <string name="processRegister">Sedang Proses Masuk</string>
+    <string name="processRegister">Sedang Proses Daftar</string>
     <string name="processMap">Sedang Memproses Peta</string>
+
+    <string name="registerSuccess">Berhasil Membuat Akun</string>
+    <string name="loginSuccess">Berhasil Masuk</string>
 
     <string name="spaceDesc">pembatas</string>
     <string name="CreatorTv">Pembuat</string>

@@ -8,6 +8,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.project.storyappproject.R
 import com.project.storyappproject.data.model.response.ListStoryItem
 import com.project.storyappproject.databinding.StoryItemRowBinding
 import com.project.storyappproject.utility.dateFormat
@@ -41,6 +43,8 @@ class StoryAdapter :
             with(binding) {
                 Glide.with(itemView.context)
                     .load(story.photoUrl)
+                    .centerCrop()
+                    .apply(RequestOptions.placeholderOf(R.drawable.placeholder))
                     .into(photo)
 
                 storyName.text = story.name

@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.preference)
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+    implementation (libs.androidx.swiperefreshlayout)
 
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)

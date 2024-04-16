@@ -58,6 +58,7 @@
     <string name="logoutSetting">Logout Account</string>
     <string name="languageSetting">Change Language</string>
     <string name="themeSetting">Change Theme</string>
+    <string name="locationSetting">Turn On Location</string>
 
     <string name="picAPhoto">Take A Picture</string>
     <string name="rotateCam">Switch Camera</string>
@@ -74,6 +75,9 @@
     <string name="processLogin">Process Login</string>
     <string name="processRegister">Process Register</string>
     <string name="processMap">Rendering The Map</string>
+
+    <string name="registerSuccess">Register Success</string>
+    <string name="loginSuccess">Login Success</string>
 
     <string name="spaceDesc">Spacer</string>
     <string name="CreatorTv">Creator</string>

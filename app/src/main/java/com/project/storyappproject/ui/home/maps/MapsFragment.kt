@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.storyappproject.R
 import com.project.storyappproject.databinding.FragmentMapsBinding
+import kotlinx.coroutines.launch
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
@@ -37,19 +39,23 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        binding.loadingDescTv.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.VISIBLE
-        binding.mapContainer.visibility = View.INVISIBLE
+        if (!isMapLoaded) {
+            binding.loadingDescTv.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
+            binding.mapContainer.visibility = View.INVISIBLE
+        }
 
         return root
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isMapLoaded) {
-            binding.loadingDescTv.visibility = View.VISIBLE
-            binding.progressBar.visibility = View.VISIBLE
-            binding.mapContainer.visibility = View.INVISIBLE
+        lifecycleScope.launch {
+            if (!isMapLoaded) {
+                binding.loadingDescTv.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
+                binding.mapContainer.visibility = View.INVISIBLE
+            }
         }
     }
 
