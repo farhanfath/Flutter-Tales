@@ -65,11 +65,6 @@ class StoriesFragment : Fragment() {
         showListStories()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        context?.let { showListStories(it) }
-//    }
-
     private fun showListStories() {
         context?.let { showListStories(it) }
         lifecycleScope.launch {
