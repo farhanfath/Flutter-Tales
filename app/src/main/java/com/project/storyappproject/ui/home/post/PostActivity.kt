@@ -205,31 +205,14 @@ class PostActivity : AppCompatActivity() {
     private fun postStoryNoLocation() {
         binding.postLayout.postBtn.setOnClickListener {
             val description = binding.postLayout.descEt.text.toString()
-            if (!TextUtils.isEmpty(description) && getFile != null) {
-                lifecycleScope.launch {
-                    showProgressBar()
-                    delay(SPACE_TIME)
-                    try {
-                        postViewModel.postStory(getFile!!, description, storyLatitude, storyLongitude)
-                        Log.d("testPost", "isi postingan : $description , $storyLatitude, $storyLongitude")
-                        showSuccessAlert()
-                    } catch (e: Exception) {
-                        showErrorAlert()
-                    } finally {
-                        hideProgressBar()
-                    }
+            when {
+                TextUtils.isEmpty(description) -> {
+                    CustomAlert(this, R.string.errorPostNoDesc, R.drawable.alert_post_img).show()
                 }
-            } else {
-                CustomAlert(this, R.string.errorPost, R.drawable.alert_post_img).show()
-            }
-        }
-    }
-
-    private fun postStoryWithLocation() {
-        binding.postLayout.postWithLocation?.setOnClickListener {
-            if (isLocationEnabled()) {
-                val description = binding.postLayout.descEt.text.toString()
-                if (!TextUtils.isEmpty(description) && getFile != null) {
+                getFile == null -> {
+                    CustomAlert(this, R.string.errorPostNoImg, R.drawable.alert_post_img).show()
+                }
+                else -> {
                     lifecycleScope.launch {
                         showProgressBar()
                         delay(SPACE_TIME)
@@ -243,8 +226,37 @@ class PostActivity : AppCompatActivity() {
                             hideProgressBar()
                         }
                     }
-                } else {
-                    CustomAlert(this, R.string.errorPost, R.drawable.alert_post_img).show()
+                }
+            }
+        }
+    }
+
+    private fun postStoryWithLocation() {
+        binding.postLayout.postWithLocation?.setOnClickListener {
+            if (isLocationEnabled()) {
+                val description = binding.postLayout.descEt.text.toString()
+                when {
+                    TextUtils.isEmpty(description) -> {
+                        CustomAlert(this, R.string.errorPostNoDesc, R.drawable.alert_post_img).show()
+                    }
+                    getFile == null -> {
+                        CustomAlert(this, R.string.errorPostNoImg, R.drawable.alert_post_img).show()
+                    }
+                    else -> {
+                        lifecycleScope.launch {
+                            showProgressBar()
+                            delay(SPACE_TIME)
+                            try {
+                                postViewModel.postStory(getFile!!, description, storyLatitude, storyLongitude)
+                                Log.d("testPost", "isi postingan : $description , $storyLatitude, $storyLongitude")
+                                showSuccessAlert()
+                            } catch (e: Exception) {
+                                showErrorAlert()
+                            } finally {
+                                hideProgressBar()
+                            }
+                        }
+                    }
                 }
             } else {
                 showLocationSettingsAlert()

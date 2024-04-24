@@ -69,7 +69,9 @@
 
     <string name="errorEmail">Enter A Valid Email</string>
     <string name="errorPass">Password Must Have a Minimum of 8 Characters</string>
-    <string name="errorPost">There is Trouble When Try to Upload</string>
+    <string name="errorPostNoDesc">Please insert a description for the story</string>
+    <string name="errorPostNoImg">Please choose your image to post</string>
+    <string name="errorPost">There is Trouble When Uploading</string>
     <string name="successPost">Post Story Success</string>
     <string name="processPost">On Uploading Process</string>
     <string name="processLogin">Process Login</string>

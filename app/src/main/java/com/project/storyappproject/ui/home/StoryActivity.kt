@@ -15,7 +15,6 @@ import com.project.storyappproject.data.datastore.UserPreference
 import com.project.storyappproject.data.model.user.UserModel
 import com.project.storyappproject.databinding.ActivityStoryBinding
 import com.project.storyappproject.databinding.NavHeaderStoryBinding
-import com.project.storyappproject.ui.home.maps.MapsFragment
 
 class StoryActivity : AppCompatActivity() {
 

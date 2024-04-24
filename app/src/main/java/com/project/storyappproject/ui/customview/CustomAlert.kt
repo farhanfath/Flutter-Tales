@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import com.project.storyappproject.databinding.LayoutAlertBinding
 
-class CustomAlert(context: Context, private val message: Int, private val image: Int): AlertDialog(context) {
+class CustomAlert(context: Context, private var message: Int, private val image: Int): AlertDialog(context) {
     init {
         setCancelable(false)
     }

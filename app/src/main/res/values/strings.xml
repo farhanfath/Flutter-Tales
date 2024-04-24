@@ -68,6 +68,8 @@
 
     <string name="errorEmail">Masukkan Email Yang Benar</string>
     <string name="errorPass">Password Harus Memiliki Minimal 8 Karakter</string>
+    <string name="errorPostNoDesc">Harap masukkan deskripsi cerita</string>
+    <string name="errorPostNoImg">Harap pilih gambar untuk diunggah</string>
     <string name="errorPost">Terjadi Kesalahan Saat Hendak Mengunggah</string>
     <string name="successPost">Berhasil Mengunggah Cerita</string>
     <string name="processPost">Sedang Proses Mengunggah</string>
