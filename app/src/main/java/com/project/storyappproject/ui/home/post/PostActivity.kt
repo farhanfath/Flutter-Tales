@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -16,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -77,7 +79,8 @@ class PostActivity : AppCompatActivity() {
         startGallery()
         startCamera()
         startCameraX()
-        postStoryButton()
+        postStoryNoLocation()
+        postStoryWithLocation()
         backButton()
     }
 
@@ -199,7 +202,7 @@ class PostActivity : AppCompatActivity() {
         }
     }
 
-    private fun postStoryButton() {
+    private fun postStoryNoLocation() {
         binding.postLayout.postBtn.setOnClickListener {
             val description = binding.postLayout.descEt.text.toString()
             if (!TextUtils.isEmpty(description) && getFile != null) {
@@ -220,6 +223,54 @@ class PostActivity : AppCompatActivity() {
                 CustomAlert(this, R.string.errorPost, R.drawable.alert_post_img).show()
             }
         }
+    }
+
+    private fun postStoryWithLocation() {
+        binding.postLayout.postWithLocation?.setOnClickListener {
+            if (isLocationEnabled()) {
+                val description = binding.postLayout.descEt.text.toString()
+                if (!TextUtils.isEmpty(description) && getFile != null) {
+                    lifecycleScope.launch {
+                        showProgressBar()
+                        delay(SPACE_TIME)
+                        try {
+                            postViewModel.postStory(getFile!!, description, storyLatitude, storyLongitude)
+                            Log.d("testPost", "isi postingan : $description , $storyLatitude, $storyLongitude")
+                            showSuccessAlert()
+                        } catch (e: Exception) {
+                            showErrorAlert()
+                        } finally {
+                            hideProgressBar()
+                        }
+                    }
+                } else {
+                    CustomAlert(this, R.string.errorPost, R.drawable.alert_post_img).show()
+                }
+            } else {
+                showLocationSettingsAlert()
+            }
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(LOCATION_SERVICE) as android.location.LocationManager
+        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)
+    }
+
+    private fun showLocationSettingsAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.locationAlert)
+        builder.setMessage(R.string.locationMessage)
+        builder.setPositiveButton(R.string.locationGoSetting) { _, _ ->
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+        }
+        builder.setNegativeButton(R.string.locationCancel) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun showProgressBar() {

@@ -87,4 +87,9 @@
 
     <string name="retryBtn">Retry</string>
     <string name="timeoutAlert">Time Out</string>
+
+    <string name="locationAlert">Unknown Location</string>
+    <string name="locationMessage">Turn on your location to post story with location</string>
+    <string name="locationGoSetting">Setting</string>
+    <string name="locationCancel">Cancel</string>
 </resources>

@@ -54,13 +54,13 @@ class ProfileFragment : Fragment() {
             userIdCv.alpha = 0f
 
             val profilePictAnimator = ObjectAnimator.ofFloat(userProfilePict, View.ALPHA, 0f, 1f)
-            profilePictAnimator.duration = 1000
+            profilePictAnimator.duration = 700
 
             val nameCvAnimator = ObjectAnimator.ofFloat(nameCv, View.ALPHA, 0f, 1f)
-            nameCvAnimator.duration = 1000
+            nameCvAnimator.duration = 700
 
             val userIdCvAnimator = ObjectAnimator.ofFloat(userIdCv, View.ALPHA, 0f, 1f)
-            userIdCvAnimator.duration = 1000
+            userIdCvAnimator.duration = 700
 
             val animatorSet = AnimatorSet()
             animatorSet.playSequentially(

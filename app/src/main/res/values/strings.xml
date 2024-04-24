@@ -86,4 +86,9 @@
 
     <string name="retryBtn">Coba Lagi</string>
     <string name="timeoutAlert">Waktu Habis</string>
+
+    <string name="locationAlert">Lokasi Tidak Aktif</string>
+    <string name="locationMessage">Aktifkan lokasi untuk mengirim story dengan lokasi.</string>
+    <string name="locationGoSetting">Pengaturan</string>
+    <string name="locationCancel">Batal</string>
 </resources>

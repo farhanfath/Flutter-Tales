@@ -39,7 +39,6 @@ class DetailStoryActivity : AppCompatActivity() {
         val storyDetail = intent.getParcelableExtra<ListStoryItem>(DETAIL_STORY) as ListStoryItem
 
         setupView(storyDetail)
-        fabActionHandler()
     }
 
     private fun setupView(storyDetail: ListStoryItem) {
@@ -53,24 +52,25 @@ class DetailStoryActivity : AppCompatActivity() {
             binding.descDetailTv.text = description
             binding.detailDateTv.text = createdAt.dateFormat()
         }
-    }
-
-    private fun fabActionHandler() {
         binding.apply {
             showBtn.setOnClickListener {
                 onAddButtonClicked()
             }
+            backHome.setOnClickListener {
+                onBackPressed()
+            }
             shareBtn.setOnClickListener {
-                val shareDetail = intent.getParcelableExtra<ListStoryItem>(DETAIL_STORY)
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_TEXT, ("Story From ${shareDetail?.name}"))
-                intent.type = "text/plain"
-                startActivity(Intent.createChooser(intent, "Send To"))
+                shareStory()
             }
         }
-        binding.backHome.setOnClickListener {
-            onBackPressed()
-        }
+    }
+
+    private fun shareStory() {
+        val shareDetail = intent.getParcelableExtra<ListStoryItem>(DETAIL_STORY)
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_TEXT, ("Story From ${shareDetail?.name}"))
+        intent.type = "text/plain"
+        startActivity(Intent.createChooser(intent, "Send To"))
     }
 
     private fun onAddButtonClicked() {
