@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.project.storyappproject.R
 
 class PasswordEditText : AppCompatEditText {
@@ -33,10 +34,11 @@ class PasswordEditText : AppCompatEditText {
 
             override fun afterTextChanged(s: Editable?) {
                 val password = s.toString()
-                error = if (password.length < 8) {
-                    context.getString(R.string.errorPass)
+                val textInputLayout = parent.parent as? TextInputLayout
+                if (password.length < 8) {
+                    textInputLayout?.error = context.getString(R.string.errorPass)
                 } else {
-                    null
+                    textInputLayout?.error = null
                 }
             }
         })
